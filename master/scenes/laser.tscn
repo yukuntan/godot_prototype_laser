@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/laser.gd" type="Script" id=1]
+[ext_resource path="res://art/laser.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "fade_in"
+length = 1.0
+loop = false
+step = 0.1
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "fade_out"
+length = 1.0
+loop = false
+step = 0.1
+
+[node name="laser" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
+Length = 1280
+
+[node name="Body" type="Line2D" parent="." index="0"]
+
+points = PoolVector2Array( 0, 0, 80, 0 )
+width = 16.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 2 )
+texture_mode = 1
+sharp_limit = 2.0
+round_precision = 8
+_sections_unfolded = [ "Border", "Capping", "Fill", "Transform" ]
+
+[node name="Hit" type="RayCast2D" parent="." index="1"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 50 )
+collision_mask = 1
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
+
+[node name="Cold" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 60.0
+one_shot = true
+autostart = false
+
+[node name="Ani" type="AnimationPlayer" parent="." index="3"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/fade_in = SubResource( 1 )
+anims/fade_out = SubResource( 2 )
+blend_times = [  ]
+
+[connection signal="timeout" from="Cold" to="." method="_on_Cold_timeout"]
+
+
